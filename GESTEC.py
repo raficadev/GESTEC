@@ -1,51 +1,51 @@
-# >>>> GESTEC <<<< Programa para gestionar tareas pendientes.
+# >>>> GESTEC <<<< Programa de Terminal/Consola para gestionar tareas pendientes.
 
-from datetime import datetime                   # Importa el módulo para trabajar con fechas y horas.
-import pickle                                   # Importa el módulo para almacenar los objetos en un archivo.
-import os                                       # Importa el módulo para interactuar con el sistema operativo.
-import platform                                 # Importa el módulo para recuperar información sobre la plataforma.
+from datetime import datetime       # Importa el módulo para trabajar con fechas y horas.
+import pickle                       # Importa el módulo para almacenar los objetos en un archivo.
+import os                           # Importa el módulo para interactuar con el sistema operativo.
+import platform                     # Importa el módulo para recuperar información sobre la plataforma.
 
 
 
-class Tarea:    # Define una tarea con su descripción, estado de compleción y fecha de creación.
+class Tarea:        # Define una tarea con su descripción, estado de compleción y fecha de creación.
     
     
     def __init__(self, descripcion):            # Constructor de la clase que inicializa los atributos con la descripción proporcionada y la fecha y hora actual.
         self.descripcion = descripcion          # (str): Almacena la descripción textual de la tarea.
-        self.fecha_creacion = datetime.now()    # (datetime): Registra la fecha y hora en que se creó la tarea.
+        self.fecha_creacion = datetime.now()    # (datetime): Registra la fecha y hora en la que se añadió la tarea.
         self.estado = False                     # (bool): Indica si la tarea está completada 'True' o pendiente 'False'.
      
         
-    def marcar_completada(self):                # Cambia el estado de la tarea a completada 'True'.
+    def marcar_completada(self):        # Cambia el estado de la tarea a completada 'True'.
         self.estado = True
 
 
-    def __str__(self):                          # Define la representación en cadena de la tarea, mostrando la descripción, el estado y la fecha de creación formateada.
+    def __str__(self):      # Define la representación en cadena de la tarea, mostrando la descripción, el estado y la fecha de creación.
         estado = "Completada" if self.estado else "Pendiente"
         return f"- {self.descripcion} ({estado}) - {self.fecha_creacion.strftime('%d-%m-%Y %H:%M')}"
 
 
 
-class GestorTareas:             # Gestiona una lista permitiendo añadir, completar y eliminar tareas.
-    mensaje_accion = f"         ¡Me encanta que estés aquí!\n \n   Selecciona la acción que voy a realizar:"  # Se utilizará para almacenar mensajes de acciones realizadas.
+class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y eliminar tareas.
+    mensaje_accion = f"         ¡Me encanta que estés aquí!\n \n   Selecciona la acción que voy a realizar:"
     
     
     def __init__(self):
-        self.tareas = []            # (list): Lista que almacena objetos de tipo 'Tarea'.
+        self.tareas = []        # (list): Lista que almacena objetos de tipo 'Tarea'.
         
         
-    def mostrar_tareas(self):       # Función para mostrar la lista de tareas.
-        if not self.tareas:         # Comprueba si la lista de tareas está vacía.
+    def mostrar_tareas(self):               # Función para mostrar la lista de tareas.
+        if not self.tareas:                 # Comprueba si la lista de tareas está vacía.
             print("\n               ¡¡¡Hurraaa!!!\n \n        No tienes tareas pendientes.")
             return
         
         print("\n------------ LISTADO DE TAREAS: -------------\n")
         for i in range(len(self.tareas)):
-            tarea = self.tareas[i]              # Recorre la lista de tareas
-            print(f"{i + 1}. {tarea}")          # y las imprime en formato de texto claro.
+            tarea = self.tareas[i]          # Recorre la lista de tareas
+            print(f"{i + 1}. {tarea}")      # y las imprime en formato de texto claro.
 
 
-    def agregar_tarea(self):                    # Función para agregar una nueva tarea a la lista.
+    def agregar_tarea(self):        # Función para agregar una nueva tarea a la lista.
         self.mensaje_accion = f""
         descripcion = input("\n -> GESTEC: ¿Qué nombre le pongo a la nueva tarea?\n \n -> YO: ") # Solicita al usuario la descripción de la tarea,
         if not descripcion.strip():                                                              # validación de descripción vacía o solo espacios en blanco.
@@ -59,15 +59,15 @@ class GestorTareas:             # Gestiona una lista permitiendo añadir, comple
         return self.mensaje_accion
 
 
-    def marcar_completada(self):                 # Función para marcar una tarea como completada.
+    def marcar_completada(self):        # Función para marcar una tarea como completada.
         if not self.tareas:                      
             self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
             return self.mensaje_accion
 
         try:
             posicion = int(input("\n -> GESTEC: ¿Cuál es la posición de la tarea que has completado?\n \n -> YO: "))    # Solicita al usuario la posición de la tarea completada.
-            if 1 <= posicion <= len(self.tareas):                                       # Valida la posición introducida.
-                self.tareas[posicion - 1].marcar_completada()                           # Marca la tarea en la posición indicada como completada utilizando el método 'marcar_completada()' del objeto 'Tarea'.
+            if 1 <= posicion <= len(self.tareas):                                                                       # Valida la posición introducida.
+                self.tareas[posicion - 1].marcar_completada()                                                           # Marca la tarea en la posición indicada como completada utilizando el método 'marcar_completada()' del objeto 'Tarea'.
                 self.mensaje_accion = f"  ¡Genial, ahora la tarea está completada!"
                 guardar_tareas(self, "tareas.dat")
                 return self.mensaje_accion
@@ -92,14 +92,23 @@ class GestorTareas:             # Gestiona una lista permitiendo añadir, comple
         try:
             posicion = int(input("\n -> GESTEC: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> YO: "))
             if 1 <= posicion <= len(self.tareas):
-                del self.tareas[posicion - 1]     # Elimina la tarea en la posición indicada de la lista utilizando la instrucción 'del'.
-                self.mensaje_accion = f"  ¡Ya no debe preocuparte esa tarea, ha sido eliminada!"
+                while True:
+                    confirmacion = input(f"\n -> GESTEC: ¿Estás seguro que quieres eliminar la tarea '{self.tareas[posicion - 1].descripcion}'?\n            Responde 's' para confirmar o 'n' si has cambiado de opinión.\n \n -> YO: ").lower()
+                    if confirmacion == 's':
+                        del self.tareas[posicion - 1]           # Elimina la tarea en la posición indicada de la lista utilizando la instrucción 'del'.
+                        break
+                    elif confirmacion == 'n':
+                        self.mensaje_accion = f"  Eliminación de tarea cancelada."
+                        return self.mensaje_accion
+                    else:
+                        self.mensaje_accion = f"  La opción indicada es inválida. Por favor, introduce 's' para eliminar o 'n' para cancelar."
+                        return self.mensaje_accion
+                self.mensaje_accion = f"  ¡Listo, la tarea ha sido eliminada!"
                 guardar_tareas(self, "tareas.dat")
                 return self.mensaje_accion
             else:
                 self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"
-                return self.mensaje_accion
-                
+                return self.mensaje_accion            
         except ValueError as e:
             if isinstance(e, ValueError):
                 self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
