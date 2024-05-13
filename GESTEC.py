@@ -7,34 +7,43 @@ import platform                     # Importa el módulo para recuperar informac
 
 
 
+
 class Tarea:        # Define una tarea con su descripción, estado de compleción y fecha de creación.
     
-    
+      
     def __init__(self, descripcion):            # Constructor de la clase que inicializa los atributos con la descripción proporcionada y la fecha y hora actual.
+        
         self.descripcion = descripcion          # (str): Almacena la descripción textual de la tarea.
         self.fecha_creacion = datetime.now()    # (datetime): Registra la fecha y hora en la que se añadió la tarea.
         self.estado = False                     # (bool): Indica si la tarea está completada 'True' o pendiente 'False'.
      
         
     def marcar_completada(self):        # Cambia el estado de la tarea a completada 'True'.
+        
         self.estado = True
 
 
     def __str__(self):      # Define la representación en cadena de la tarea, mostrando la descripción, el estado y la fecha de creación.
+        
         estado = "Completada" if self.estado else "Pendiente"
         return f"- {self.descripcion} ({estado}) - {self.fecha_creacion.strftime('%d-%m-%Y %H:%M')}"
 
 
 
+
 class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y eliminar tareas.
+    
+    
     mensaje_accion = f"         ¡Me encanta que estés aquí!\n \n   Selecciona la acción que voy a realizar:"
     
     
     def __init__(self):
+        
         self.tareas = []        # (list): Lista que almacena objetos de tipo 'Tarea'.
         
         
     def mostrar_tareas(self):               # Función para mostrar la lista de tareas.
+        
         if not self.tareas:                 # Comprueba si la lista de tareas está vacía.
             print("\n               ¡¡¡Hurraaa!!!\n \n        No tienes tareas pendientes.")
             return
@@ -46,8 +55,9 @@ class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y el
 
 
     def agregar_tarea(self):        # Función para agregar una nueva tarea a la lista.
+        
         self.mensaje_accion = f""
-        descripcion = input("\n -> GESTEC: ¿Qué nombre le pongo a la nueva tarea?\n \n -> YO: ") # Solicita al usuario la descripción de la tarea,
+        descripcion = input("\n -> GESTEC: ¿Cómo quieres que se llame la nueva tarea?\n \n -> YO: ") # Solicita al usuario la descripción de la tarea,
         if not descripcion.strip():                                                              # validación de descripción vacía o solo espacios en blanco.
             self.mensaje_accion = f"  ¡No has indicado ningún nombre para la tarea!"
             return
@@ -60,6 +70,7 @@ class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y el
 
 
     def marcar_completada(self):        # Función para marcar una tarea como completada.
+        
         if not self.tareas:                      
             self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
             return self.mensaje_accion
@@ -70,8 +81,7 @@ class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y el
                 self.tareas[posicion - 1].marcar_completada()                                                           # Marca la tarea en la posición indicada como completada utilizando el método 'marcar_completada()' del objeto 'Tarea'.
                 self.mensaje_accion = f"  ¡Genial, ahora la tarea está completada!"
                 guardar_tareas(self, "tareas.dat")
-                return self.mensaje_accion
-                
+                return self.mensaje_accion               
             else:                                                                      # Si la posición es inválida,
                 self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"  # imprime un mensaje indicando que la posición introducida es incorrecta.
                 return self.mensaje_accion
@@ -79,12 +89,13 @@ class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y el
         except ValueError as e:                   # Maneja la excepción 'ValueError' si la entrada no es un número entero.
             if isinstance(e, ValueError):
                 self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
-                return self.mensaje_accion
+                return self.mensaje_accion          
             else:
                 raise                             # Propagar la excepción no relacionada con el valor
 
 
     def eliminar_tarea(self):                     # Función para eliminar una tarea de la lista.
+        
         if not self.tareas:
             self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
             return self.mensaje_accion
@@ -105,10 +116,11 @@ class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y el
                         return self.mensaje_accion
                 self.mensaje_accion = f"  ¡Listo, la tarea ha sido eliminada!"
                 guardar_tareas(self, "tareas.dat")
-                return self.mensaje_accion
+                return self.mensaje_accion          
             else:
                 self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"
                 return self.mensaje_accion            
+        
         except ValueError as e:
             if isinstance(e, ValueError):
                 self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
@@ -117,24 +129,65 @@ class GestorTareas:     # Gestiona una lista permitiendo añadir, completar y el
                 raise
 
 
+    def modificar_tarea(self):              # Función para modificar la descripción de una tarea existente.
+        
+        if not self.tareas:
+            self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
+            return self.mensaje_accion
+
+        try:
+            posicion = int(input("\n -> GESTEC: ¿Cuál es la posición de la tarea que quieres modificar?\n \n -> YO: "))
+            if 1 <= posicion <= len(self.tareas):
+                tarea_a_modificar = self.tareas[posicion - 1]
+                nueva_descripcion = input(f"\n -> GESTEC: La tarea '{tarea_a_modificar.descripcion}' a partir de ahora ¿cómo se llamará?\n \n -> YO: ")
+                if nueva_descripcion.strip():
+                    tarea_a_modificar.descripcion = nueva_descripcion
+                    self.mensaje_accion = f"  ¡Se ha modificado el nombre de la tarea!"
+                    guardar_tareas(self, "tareas.dat")
+                    return self.mensaje_accion
+                else:
+                    self.mensaje_accion = f"  ¡No has indicado ningún nombre para la tarea! La tarea se mantendrá sin cambios."
+                    return self.mensaje_accion
+            else:
+                self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"
+                return self.mensaje_accion
+        
+        except ValueError as e:
+            if isinstance(e, ValueError):
+                self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
+                return self.mensaje_accion
+            else:
+                raise
+            
+            
+    def opcion_invalida(self):
+        
+        self.mensaje_accion = f"  ¡No existe ninguna acción para el carácter introducido!\n \n      > * Elige un número de acción del 1 al 5. * <"
+
+
 def guardar_tareas(gestor_tareas, nombre_archivo):          # Función para guardar la lista de tareas en un archivo.
+    
     with open(nombre_archivo, "wb") as archivo:             # Abre el archivo especificado en modo escritura binaria ("wb").
         pickle.dump(gestor_tareas.tareas, archivo)          # Serializa la lista de tareas almacenada en el atributo 'tareas' del objeto 'gestor_tareas' utilizando el módulo 'pickle'.
                                                             # El objeto serializado se escribe en el archivo abierto utilizando el método 'dump()'.
 
 
 def cargar_tareas(gestor_tareas, nombre_archivo):           # Función para cargar la lista de tareas de un archivo.
+    
     try:
         with open(nombre_archivo, "rb") as archivo:         # Intenta abrir el archivo especificado en modo lectura binaria ("rb").
             gestor_tareas.tareas = pickle.load(archivo)     # Deserializa el contenido del archivo abierto utilizando el módulo 'pickle'.
                                                             # El objeto deserializado se carga en el atributo 'tareas' del objeto 'gestor_tareas', reemplazando su contenido anterior.           
+    
     except FileNotFoundError:       # Maneja la excepción que se produce si el archivo no existe.
         pass                        # En este caso, no se realiza ninguna acción y se ignora la excepción.
+    
     except Exception as e:          # Manejo de otras excepciones.
         print(f"  ¡Ha ocurrido un error al cargar las tareas: {e}")
 
 
 def limpiar_consola():                              # Función para limpiar la pantalla de la consola.
+    
     sistema_operativo = platform.system()           # Detecta el sistema operativo del usuario y ejecuta el comando de limpieza adecuado. 
     if sistema_operativo == "Windows":              # Si el sistema operativo es Windows,
         os.system('cls')                            # ejecuta el comando 'cls' para limpiar la pantalla.
@@ -145,14 +198,17 @@ def limpiar_consola():                              # Función para limpiar la p
     
 
 def mostrar_menu():                                 # Función para mostrar el menú principal de la aplicación.
+    
     print("---------------- ACCIONES: ------------------\n")
     print(" > 1 - Añadir una tarea nueva.")
-    print(" > 2 - Marcar una tarea completada.")
-    print(" > 3 - Eliminar una tarea.")
-    print(" > 4 - Salir del programa.")
+    print(" > 2 - Marcar una tarea como completada.")
+    print(" > 3 - Modificar una tarea existente.")
+    print(" > 4 - Eliminar una tarea existente.")
+    print(" > 5 - Salir del programa.")
 
 
 def main():                                         # Función principal del programa.
+    
     gestor_tareas = GestorTareas()                  # Crea una instancia del gestor de tareas
     cargar_tareas(gestor_tareas, "tareas.dat")      # Carga las tareas guardadas al iniciar el programa.
     
@@ -174,13 +230,18 @@ def main():                                         # Función principal del pro
             case "1":
                 gestor_tareas.agregar_tarea()               
             case "2":
-                gestor_tareas.marcar_completada()            
+                gestor_tareas.marcar_completada()
             case "3":
-                gestor_tareas.eliminar_tarea()       
+                gestor_tareas.modificar_tarea()            
             case "4":
-                guardar_tareas(gestor_tareas, "tareas.dat")                  # Guarda las tareas antes de salir.
+                gestor_tareas.eliminar_tarea()       
+            case "5":
+                guardar_tareas(gestor_tareas, "tareas.dat")     # Guarda las tareas antes de salir.
                 print(f"\n -> GESTEC: ¡Ha sido un placer ayudarte, nos vemos pronto!\n \n > Desconectando...\n")
-                break                                                        # Fuerza la salida del bucle.
+                break                                           # Fuerza la salida del bucle.
+            case _:
+                gestor_tareas.opcion_invalida()
+            
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,4 @@
-('/Users/rafel/GESTEC/GESTEC/build/GESTEC/PYZ-00.pyz',
+('/Users/rafel/GESTEC/build/GESTEC/PYZ-00.pyz',
  [('_compat_pickle',
    '/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/_compat_pickle.py',
    'PYMODULE'),
