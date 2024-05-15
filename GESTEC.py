@@ -6,14 +6,15 @@ import os                       # Importa el módulo para interactuar con el sis
 import platform                 # Importa el módulo para recuperar información sobre la plataforma.
 
 class Tarea:
-    """Define una tarea con su descripción, estado de compleción y fecha de creación."""
+    """Define una tarea con su descripción, estado de compleción, prioridad y fecha de creación."""
     
-    def __init__(self, descripcion):
+    def __init__(self, descripcion, prioridad = False):
         """Constructor de la clase que inicializa los atributos con la
-        descripción proporcionada y la fecha y hora actual."""
+        descripción proporcionada, la prioridad y la fecha y hora actual."""
         self.descripcion = descripcion          # (str): Almacena la descripción textual de la tarea.
         self.fecha_creacion = datetime.now()    # (datetime): Registra la fecha y hora en la que se añadió la tarea.
         self.estado = False                     # (bool): Indica si está completada 'True' o pendiente 'False'.
+        self.prioridad = prioridad              # (bool): Indica si la tarea es prioritaria o no.
     
     def marcar_completada(self):
         self.estado = True
@@ -27,122 +28,160 @@ class Tarea:
 
 class GestorTareas:
     """Gestiona una lista permitiendo añadir, completar y eliminar tareas."""
-    mensaje_accion = f"         ¡Me encanta que estés aquí!\n \n   Selecciona la acción que voy a realizar:"
+    carpeta_datos = os.path.join(os.path.expanduser("~"), "Gestec Archivos")
+    archivo_datos = os.path.join(carpeta_datos, "tareas.dat")
+    archivo_usuario = os.path.join(carpeta_datos, "usuario.txt")
+    mensaje_accion = ""
     
     def __init__(self):
         self.tareas = []    # (list): Lista que almacena objetos de tipo 'Tarea'.
+        self.crear_carpeta_datos()
+        self.nombre_usuario = self.cargar_usuario()
+        self.mensaje_accion = f"      ¡Me encanta que estés aquí {self.nombre_usuario}!\n \n   Selecciona la acción que voy a realizar:"
+    
+    def crear_carpeta_datos(self):
+        """Crea la carpeta para almacenar las tareas si no existe."""
+        if not os.path.exists(self.carpeta_datos):
+            os.makedirs(self.carpeta_datos)
+    
+    def cargar_usuario(self):
+        """Carga el nombre de usuario desde un archivo o lo solicita si no existe."""
+        if os.path.exists(self.archivo_usuario):
+            with open(self.archivo_usuario, "r") as archivo:
+                return archivo.read().strip()
+        else:
+            nombre = input(" -> GESTEC: ¿Cómo te llamas?\n -> ???: ")
+            with open(self.archivo_usuario, "w") as archivo:
+                archivo.write(nombre)
+            return nombre
     
     def mostrar_tareas(self):
         if not self.tareas: # Comprueba si la lista de tareas está vacía.
-            print("\n               ¡¡¡Hurraaa!!!\n \n        No tienes tareas pendientes.")
+            print(f"\n          ¡¡¡Hurraaa {self.nombre_usuario}!!!\n \n        No tienes tareas pendientes.")
             return
         
-        print("\n------------ LISTADO DE TAREAS: -------------\n")
-        for i in range(len(self.tareas)):
-            tarea = self.tareas[i]      # Recorre la lista de tareas
-            print(f"{i + 1}. {tarea}")  # y las imprime en formato de texto claro.
+        # Separa las tareas en dos listas: alta_prioridad y normal_prioridad
+        alta_prioridad = [tarea for tarea in self.tareas if tarea.prioridad]
+        normal_prioridad = [tarea for tarea in self.tareas if not tarea.prioridad]
+        
+        print("\n------------ LISTADO DE TAREAS: -------------")
+        if alta_prioridad:
+            print("\n >> PRIORIDAD ALTA:\n")
+            for i, tarea in enumerate(alta_prioridad, start=1):
+                print(f"{i}. {tarea}")
+        if normal_prioridad:
+            print("\n \n >> PRIORIDAD NORMAL:\n")
+            for i, tarea in enumerate(normal_prioridad, start=len(alta_prioridad) + 1):
+                print(f"{i}. {tarea}")
     
     def agregar_tarea(self):
-        descripcion = input("\n -> GESTEC: ¿Cómo quieres que se llame la nueva tarea?\n \n -> YO: ")
+        descripcion = input(f"\n -> GESTEC: ¿Cómo quieres que se llame la nueva tarea?\n \n -> {self.nombre_usuario}: ")
         if not descripcion.strip(): # Validación de descripción vacía o solo espacios en blanco.
-            self.mensaje_accion = f"  ¡No has indicado ningún nombre para la tarea!"
+            self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea!"
             return
         
-        nueva_tarea = Tarea(descripcion)    # Crea un nuevo objeto 'Tarea',
+        respuesta_prioritaria = input(f"\n -> GESTEC: ¿Es una tarea prioritaria? (s/n)\n \n -> {self.nombre_usuario}: ").lower()
+        if respuesta_prioritaria == 's':
+            es_prioritaria = True
+        elif respuesta_prioritaria == 'n':
+            es_prioritaria = False
+        else:
+            self.mensaje_accion = "  ¡Respuesta inválida! Por favor, responde 's' para sí o 'n' para no."
+            return
+        
+        nueva_tarea = Tarea(descripcion, es_prioritaria)    # Crea un nuevo objeto 'Tarea',
         self.tareas.append(nueva_tarea)     # y agrega el nuevo objeto a la lista de tareas.
         self.guardar_tareas()  # Guarda las tareas en un archivo.
-        self.mensaje_accion = f"  ¡Ahora tienes una nueva tarea pendiente!"
-        return
+        self.mensaje_accion = "  ¡Ahora tienes una nueva tarea pendiente!"
     
     def marcar_completada(self):
         if not self.tareas:                      
-            self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
+            self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
             return
         
         try:
-            posicion = int(input("\n -> GESTEC: ¿Cuál es la posición de la tarea que has completado?\n \n -> YO: "))
+            posicion = int(input(f"\n -> GESTEC: ¿Cuál es la posición de la tarea que has completado?\n \n -> {self.nombre_usuario}: "))
             if 1 <= posicion <= len(self.tareas):   # Valida la posición introducida.
                 self.tareas[posicion - 1].marcar_completada()   # Marca la tarea en la posición indicada como completada utilizando el método 'marcar_completada()' del objeto 'Tarea'.
                 self.guardar_tareas()
-                self.mensaje_accion = f"  ¡Genial, la tarea se ha completado!"
-                return
+                self.mensaje_accion = "  ¡Genial, la tarea se ha completado!"
             else:
-                self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"
-                return
+                self.mensaje_accion = "  ¡La posición que has indicado es inválida!"
         except ValueError: # Maneja la excepción 'ValueError' si la entrada no es un número entero.
-                self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
-                return
+                self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
     
     def eliminar_tarea(self):
         if not self.tareas:
-            self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
+            self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
             return
         
         try:
-            posicion = int(input("\n -> GESTEC: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> YO: "))
+            posicion = int(input(f"\n -> GESTEC: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> {self.nombre_usuario}: "))
             if 1 <= posicion <= len(self.tareas):
-                confirmacion = input(f"\n -> GESTEC: ¿Estás seguro que quieres eliminar la tarea '{self.tareas[posicion - 1].descripcion}'?\n            Responde 's' para confirmar o 'n' si has cambiado de opinión.\n \n -> YO: ").lower()
+                confirmacion = input(f"\n -> GESTEC: ¿Estás seguro que quieres eliminar la tarea '{self.tareas[posicion - 1].descripcion}'? (s/n)\n \n -> {self.nombre_usuario}: ").lower()
                 if confirmacion == 's':
                     del self.tareas[posicion - 1]   # Elimina la tarea en la posición indicada de la lista utilizando la instrucción 'del'.
                     self.guardar_tareas()
-                    self.mensaje_accion = f"  ¡Listo, la tarea ha sido eliminada!"
-                    return
+                    self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
                 elif confirmacion == 'n':
-                    self.mensaje_accion = f"  Se ha cancelado la eliminación de la tarea."
-                    return
+                    self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
                 else:
-                    self.mensaje_accion = f"  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
-                    return
+                    self.mensaje_accion = "  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
             else:
-                self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"
-                return           
+                self.mensaje_accion = "  ¡La posición que has indicado es inválida!"        
         except ValueError:
-                self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
-                return
+                self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
     
     def modificar_tarea(self):
         if not self.tareas:
-            self.mensaje_accion = f"  ¡No tienes ninguna tarea pendiente!"
+            self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
             return
         
         try:
-            posicion = int(input("\n -> GESTEC: ¿Cuál es la posición de la tarea que quieres modificar?\n \n -> YO: "))
+            posicion = int(input(f"\n -> GESTEC: ¿Cuál es la posición de la tarea que quieres modificar?\n \n -> {self.nombre_usuario}: "))
             if 1 <= posicion <= len(self.tareas):
-                nueva_descripcion = input(f"\n -> GESTEC: La tarea '{self.tareas[posicion - 1].descripcion}' a partir de ahora ¿cómo se llamará?\n \n -> YO: ")
-                if nueva_descripcion.strip():
-                    self.tareas[posicion - 1].descripcion = nueva_descripcion
+                print(f"\n -> GESTEC: ¿Qué deseas modificar de la tarea '{self.tareas[posicion - 1].descripcion}'?")
+                print("    1. Descripción")
+                print("    2. Prioridad")
+                opcion = input(f"\n -> {self.nombre_usuario}: ")
+                if opcion == "1":
+                    nueva_descripcion = input(f"\n -> GESTEC: La tarea '{self.tareas[posicion - 1].descripcion}' a partir de ahora ¿cómo se llamará?\n \n -> {self.nombre_usuario}: ")
+                    if nueva_descripcion.strip():
+                        self.tareas[posicion - 1].descripcion = nueva_descripcion
+                        self.guardar_tareas()
+                        self.mensaje_accion = "  ¡Se ha modificado el nombre de la tarea!"
+                    else:
+                        self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea! La tarea se mantendrá sin cambios."
+                elif opcion == "2":
+                    nueva_prioridad = input(f"\n -> GESTEC: ¿La tarea '{self.tareas[posicion - 1].descripcion}' es prioritaria? (s/n)\n \n -> {self.nombre_usuario}: ").lower() == 's'
+                    self.tareas[posicion - 1].prioridad = nueva_prioridad
                     self.guardar_tareas()
-                    self.mensaje_accion = f"  ¡Se ha modificado el nombre de la tarea!"
-                    return
+                    self.mensaje_accion = "  ¡Se ha modificado la prioridad de la tarea!"
                 else:
-                    self.mensaje_accion = f"  ¡No has indicado ningún nombre para la tarea! La tarea se mantendrá sin cambios."
-                    return
+                    self.mensaje_accion = "  ¡Opción inválida! Por favor, elige '1' para modificar el nombre o '2' para modificar la prioridad."
             else:
-                self.mensaje_accion = f"  ¡La posición que has indicado es inválida!"
-                return
+                self.mensaje_accion = "  ¡La posición que has indicado es inválida!"
         except ValueError:
-                self.mensaje_accion = f"  ¡Tienes que introducir un número entero!"
-                return
+            self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
     
     def opcion_invalida(self):
-        self.mensaje_accion = f"  ¡No existe ninguna acción para el carácter introducido!\n \n  > * Elige un número de acción del 1 al 5. * <"
+        self.mensaje_accion = "  ¡No existe ninguna acción para el carácter introducido!\n \n  > * Elige un número de acción del 1 al 5. * <"
     
     def guardar_tareas(self):
-        with open("tareas.dat", "wb") as archivo:
+        with open(self.archivo_datos, "wb") as archivo:
             pickle.dump(self.tareas, archivo)
         """Abre el archivo especificado en modo escritura binaria ("wb").
         Escribe en el archivo abierto utilizando el método 'dump()'."""
     
     def cargar_tareas(self):
         try:
-            with open("tareas.dat", "rb") as archivo:
+            with open(self.archivo_datos, "rb") as archivo:
                 self.tareas = pickle.load(archivo)
             """Intenta abrir el archivo especificado en modo lectura binaria ("rb")."""
         except FileNotFoundError:   # Maneja la excepción que se produce si el archivo no existe.
             pass                    # En este caso, no se realiza ninguna acción y se ignora la excepción.
         except Exception as e:
             print(f"  ¡Ha ocurrido un error al cargar las tareas: {e}")
-
 
 def limpiar_consola():
     os.system('cls' if platform.system() == "Windows" else 'clear')
@@ -154,7 +193,6 @@ def mostrar_menu():
     print(" > 3 - Modificar una tarea existente.")
     print(" > 4 - Eliminar una tarea existente.")
     print(" > 5 - Salir del programa.")
-
 
 def main():
     gestor_tareas = GestorTareas()  # Crea una instancia del gestor de tareas
@@ -170,7 +208,7 @@ def main():
         print(gestor_tareas.mensaje_accion)
         print("\n")
         mostrar_menu()
-        opcion = input("\n -> YO: Quiero que realices la acción número: ")
+        opcion = input(f"\n -> {gestor_tareas.nombre_usuario}: Quiero que realices la acción número: ")
         
         if opcion == "1":
             gestor_tareas.agregar_tarea()
@@ -182,7 +220,7 @@ def main():
             gestor_tareas.eliminar_tarea()
         elif opcion == "5":
             gestor_tareas.guardar_tareas()
-            print(f"\n -> GESTEC: ¡Ha sido un placer ayudarte, nos vemos pronto!\n \n > Desconectando...\n")
+            print(f"\n -> GESTEC: ¡Ha sido un placer ayudarte {gestor_tareas.nombre_usuario}, nos vemos pronto!\n \n > Desconectando...\n")
             break
         else:
             gestor_tareas.opcion_invalida()
