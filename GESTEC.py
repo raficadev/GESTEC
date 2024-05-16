@@ -53,7 +53,7 @@ class GestorTareas:
             with open(self.archivo_usuario, "r") as archivo:
                 return archivo.read().strip()
         else:
-            nombre = input(f" -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo te llamas?\n -> {Fore.CYAN}{Style.BRIGHT}???{Style.RESET_ALL}: ")
+            nombre = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: Soy {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}, y es un placer para mi darte la bienvenida a tu nuevo Gestor de Tareas.\n            ¿Puedes indicarme tu nombre?\n \n -> {Fore.CYAN}{Style.BRIGHT}???{Style.RESET_ALL}: ")
             with open(self.archivo_usuario, "w") as archivo:
                 archivo.write(nombre)
             return nombre
