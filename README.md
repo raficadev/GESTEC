@@ -6,12 +6,13 @@ De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las 
 ---
 ## Tabla de Contenidos
 1. [Características](#características)
-2. [Instalación](#instalación)
-3. [Uso](#uso)
-4. [Contribuir](#contribuir)
-5. [Licencia](#licencia)
-6. [Autor](#autor)
-7. [Agradecimientos](#agradecimientos)
+2. [Hoja de Ruta](#hojaderuta)
+3. [Instalación](#instalación)
+4. [Uso](#uso)
+5. [Contribuir](#contribuir)
+6. [Licencia](#licencia)
+7. [Autor](#autor)
+8. [Agradecimientos](#agradecimientos)
    
 ---
 ## Características
@@ -21,7 +22,29 @@ De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las 
 - Modificar el nombre y/o la prioridad de las tareas existentes.
 - Eliminar las tareas existentes.
 - Almacenamiento de tareas en disco.
+
+---
+## Hoja de Ruta
+Esta hoja de ruta detalla las etapas del desarrollo de GESTEC. Las fechas y características pueden ajustarse según las necesidades del proyecto y las contribuciones de la comunidad.
+
+Fase 1: Versión Inicial (v1.0.0)
+Fecha de lanzamiento: Mayo 2024
+
+ - [x] Gestión básica de tareas:
+   - [x] Añadir tareas con nombre y prioridad.
+   - [x] Marcar tareas como completadas.
+   - [x] Modificar nombre y/o prioridad de tareas existentes.
+   - [x] Eliminar tareas.
+ - [x] Persistencia de datos:
+   - [x] Guardar y cargar tareas desde un archivo.
+   - [x] Establecer nombre de usuario y recordarlo.
+ - [x] Interfaz de usuario en la terminal.
+   - [x] Menú de opciones intuitivo.
+   - [x] Mensajes interactivos con el usuario.
+   - [x] Uso de `colorama` para resaltar texto.
   
+  Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proyecto evoluciona y se reciben comentarios de los usuarios y colaboradores. ¡Tu participación y retroalimentación son fundamentales para el éxito continuo de GESTEC!
+
 ---
 ## Instalación
 **Prerrequisitos:**
@@ -72,6 +95,10 @@ Las contribuciones son bienvenidas. Sigue estos pasos para contribuir:
 3. Realiza los cambios necesarios y haz commits `git commit -m 'Añadir nueva funcionalidad'`.
 4. Sube los cambios a tu repositorio `git push origin feature/nueva-funcionalidad`.
 5. Abre un Pull Request.
+
+También puedes contribuir de las siguientes formas:
+1. Crea un [issue](https://github.com/raficadev/GESTEC/issues) con tus sugerencias o mejoras.
+2. Participa en las discusiones de la comunidad en el repositorio.
    
 **Por favor, asegúrate de que tu código sigue el estilo del proyecto y que todos los tests pasan.**
 
