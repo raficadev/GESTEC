@@ -6,7 +6,7 @@ De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las 
 ---
 ## Tabla de Contenidos
 1. [Características](#características)
-2. [Hoja de Ruta](#hojaderuta)
+2. [Hoja de Ruta](#hoja-de-ruta)
 3. [Instalación](#instalación)
 4. [Uso](#uso)
 5. [Contribuir](#contribuir)
@@ -27,23 +27,26 @@ De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las 
 ## Hoja de Ruta
 Esta hoja de ruta detalla las etapas del desarrollo de GESTEC. Las fechas y características pueden ajustarse según las necesidades del proyecto y las contribuciones de la comunidad.
 
-Fase 1: Versión Inicial (v1.0.0)
-Fecha de lanzamiento: Mayo 2024
-
- - [x] Gestión básica de tareas:
-   - [x] Añadir tareas con nombre y prioridad.
-   - [x] Marcar tareas como completadas.
-   - [x] Modificar nombre y/o prioridad de tareas existentes.
-   - [x] Eliminar tareas.
- - [x] Persistencia de datos:
-   - [x] Guardar y cargar tareas desde un archivo.
-   - [x] Establecer nombre de usuario y recordarlo.
- - [x] Interfaz de usuario en la terminal.
-   - [x] Menú de opciones intuitivo.
-   - [x] Mensajes interactivos con el usuario.
-   - [x] Uso de `colorama` para resaltar texto.
+> [!NOTE]
+> <details>
+> <summary>Fase 1: Versión Inicial (v1.0.0). 
+> 
+> Fecha de lanzamiento: Mayo 2024</summary>
+> - Gestión básica de tareas:
+> - [x] Añadir tareas con nombre y prioridad.
+> - [x] Marcar tareas como completadas.
+> - [x] Modificar nombre y/o prioridad de tareas existentes.
+> - [x] Eliminar tareas.
+> - Persistencia de datos:
+> - [x] Guardar y cargar tareas desde un archivo.
+> - [x] Establecer nombre de usuario y recordarlo.
+> - Interfaz de usuario en la terminal:
+> - [x] Menú de opciones intuitivo.
+> - [x] Mensajes interactivos con el usuario.
+> - [x] Uso de `colorama` para resaltar texto.
+</details>
   
-  Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proyecto evoluciona y se reciben comentarios de los usuarios y colaboradores. ¡Tu participación y retroalimentación son fundamentales para el éxito continuo de GESTEC!
+Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proyecto evoluciona y se reciben comentarios de los usuarios y colaboradores. ¡Tu participación y retroalimentación son fundamentales para el éxito continuo de GESTEC!
 
 ---
 ## Instalación
@@ -67,6 +70,9 @@ pip install colorama
     ```bash
     pip install -r requirements.txt
     ```
+**Descargar el ejecutable:**
+
+Si prefieres no clonar el repositorio y deseas usar una versión precompilada del programa, puedes descargar el ejecutable desde la sección de [Releases](https://github.com/raficadev/GESTEC/releases).
     
 ---
 ## Uso
