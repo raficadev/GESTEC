@@ -50,6 +50,7 @@ htmlcov/
 # Logs and databases
 *.log
 *.sqlite
+.DS_Store
 
 # Output files
 *.out
