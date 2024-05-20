@@ -50,7 +50,6 @@ htmlcov/
 # Logs and databases
 *.log
 *.sqlite
-.DS_Store
 
 # Output files
 *.out
@@ -58,3 +57,6 @@ htmlcov/
 # Project specific
 /Gestec\ Archivos/tareas.json
 /Gestec\ Archivos/usuario.json
+
+# macOS specific
+.DS_Store
