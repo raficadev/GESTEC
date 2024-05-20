@@ -21,11 +21,11 @@ De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las 
 - Marcar las tareas existentes como completadas.
 - Modificar el nombre y/o la prioridad de las tareas existentes.
 - Eliminar las tareas existentes.
-- Almacenamiento de tareas en disco.
+- Almacenamiento en archivo `JSON`.
 
 ---
 ## Hoja de Ruta
-Esta hoja de ruta detalla las etapas del desarrollo de GESTEC. Las fechas y características pueden ajustarse según las necesidades del proyecto y las contribuciones de la comunidad.
+Esta hoja de ruta detalla las etapas del desarrollo de **GESTEC**. Las fechas y características pueden ajustarse según las necesidades del proyecto y las contribuciones de la comunidad.
 
 > [!NOTE]
 > <details>
@@ -46,7 +46,7 @@ Esta hoja de ruta detalla las etapas del desarrollo de GESTEC. Las fechas y cara
 > - [x] Uso de `colorama` para resaltar texto.
 </details>
   
-Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proyecto evoluciona y se reciben comentarios de los usuarios y colaboradores. ¡Tu participación y retroalimentación son fundamentales para el éxito continuo de GESTEC!
+Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proyecto evoluciona y se reciben comentarios de los usuarios y colaboradores. ¡Tu participación y retroalimentación son fundamentales para el éxito continuo de **GESTEC**!
 
 ---
 ## Instalación
@@ -113,7 +113,9 @@ Si encuentras un error, por favor abre un [issue](https://github.com/raficadev/G
 
 ---
 ## Licencia
-Este proyecto está licenciado bajo la licencia Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) creado por Rafel Castelló Fiol (raficadev) en 2024. Puedes encontrar más información sobre la licencia en [safecreative](https://www.safecreative.org/work/2405097929940-gestec).
+Este proyecto está licenciado bajo la licencia [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) creada por Rafel Castelló Fiol (raficadev) en 2024. 
+Puedes encontrar más información sobre la licencia en [safecreative](https://www.safecreative.org/work/2405097929940-gestec).
+El texto completo de la licencia se encuentra en el archivo [LICENSE.txt](LICENSE.txt).
     
 ---
 ## Autor
