@@ -1,7 +1,7 @@
 # GESTEC - Gestor de Tareas
 GESTEC es una aplicación desarrollada en lenguaje Python que, haciendo uso de la interfaz de línea de comandos (CLI), permite al usuario a través de la Terminal/Consola del Sistema Operativo (SO) gestionar una lista de tareas pendientes. 
 
-De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las tareas son almacenadas en un archivo `tareas.dat` al igual que el nombre de usuario `usuario.txt` en la carpeta `Gestec Archivos` para su conservación y posterior cargado al volver a acceder a la aplicación.
+De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las tareas son almacenadas en un archivo `tareas.json` al igual que el nombre de usuario `usuario.json` en la carpeta `Gestec Archivos` para su conservación y posterior cargado al volver a acceder a la aplicación.
 
 ---
 ## Tabla de Contenidos

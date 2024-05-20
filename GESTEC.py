@@ -1,7 +1,7 @@
-# Programa de Terminal/Consola para gestionar tareas pendientes.
+# Aplicación de Terminal/Consola para gestionar tareas pendientes.
 
 from datetime import datetime   # Importa el módulo para trabajar con fechas y horas.
-import pickle                   # Importa el módulo para almacenar los objetos en un archivo.
+import json                     # Importa el módulo para almacenar los objetos en un archivo.
 import os                       # Importa el módulo para interactuar con el sistema operativo.
 import platform                 # Importa el módulo para recuperar información sobre la plataforma.
 from colorama import init, Fore, Back, Style
@@ -11,13 +11,13 @@ init(autoreset=True)  # Inicializar Colorama para que los colores se reseteen de
 class Tarea:
     """Define una tarea con su descripción, estado de compleción, prioridad y fecha de creación."""
     
-    def __init__(self, descripcion, prioridad = False):
+    def __init__(self, descripcion, prioridad = False, fecha_creacion=None, estado=False):
         """Constructor de la clase que inicializa los atributos con la
         descripción proporcionada, la prioridad y la fecha y hora actual."""
-        self.descripcion = descripcion          # (str): Almacena la descripción textual de la tarea.
-        self.fecha_creacion = datetime.now()    # (datetime): Registra la fecha y hora en la que se añadió la tarea.
-        self.estado = False                     # (bool): Indica si está completada 'True' o pendiente 'False'.
-        self.prioridad = prioridad              # (bool): Indica si la tarea es prioritaria o no.
+        self.descripcion = descripcion      # (str): Almacena la descripción textual de la tarea.
+        self.fecha_creacion = fecha_creacion if fecha_creacion else datetime.now()      # (datetime): Registra la fecha y hora en la que se añadió la tarea.
+        self.estado = estado                # (bool): Indica si está completada 'True' o pendiente 'False'.
+        self.prioridad = prioridad          # (bool): Indica si la tarea es prioritaria o no.
     
     def marcar_completada(self):
         self.estado = True
@@ -27,13 +27,32 @@ class Tarea:
         descripción, el estado y la fecha de creación."""
         estado = f"{Fore.GREEN}Completada{Style.RESET_ALL}" if self.estado else f"{Fore.RED}Pendiente{Style.RESET_ALL}"
         return f"- {self.descripcion} ({estado}) - {self.fecha_creacion.strftime('%d-%m-%Y %H:%M')}"
+    
+    def to_dict(self):
+        """Convierte la tarea a un diccionario para almacenamiento en JSON."""
+        return {
+            'descripcion': self.descripcion,
+            'fecha_creacion': self.fecha_creacion.isoformat(),
+            'estado': self.estado,
+            'prioridad': self.prioridad
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Crea una instancia de Tarea desde un diccionario."""
+        return cls(
+            descripcion=data['descripcion'],
+            prioridad=data['prioridad'],
+            fecha_creacion=datetime.fromisoformat(data['fecha_creacion']),
+            estado=data['estado']
+        )
 
 
 class GestorTareas:
     """Gestiona una lista permitiendo añadir, completar y eliminar tareas."""
     carpeta_datos = os.path.join(os.path.expanduser("~"), "Gestec Archivos")
-    archivo_datos = os.path.join(carpeta_datos, "tareas.dat")
-    archivo_usuario = os.path.join(carpeta_datos, "usuario.txt")
+    archivo_datos = os.path.join(carpeta_datos, "tareas.json")
+    archivo_usuario = os.path.join(carpeta_datos, "usuario.json")
     mensaje_accion = ""
     
     def __init__(self):
@@ -51,11 +70,11 @@ class GestorTareas:
         """Carga el nombre de usuario desde un archivo o lo solicita si no existe."""
         if os.path.exists(self.archivo_usuario):
             with open(self.archivo_usuario, "r") as archivo:
-                return archivo.read().strip()
+                return json.load(archivo)['nombre']
         else:
             nombre = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: Soy {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}, y es un placer para mi darte la bienvenida a tu nuevo Gestor de Tareas.\n            ¿Puedes indicarme tu nombre?\n \n -> {Fore.CYAN}{Style.BRIGHT}???{Style.RESET_ALL}: ")
             with open(self.archivo_usuario, "w") as archivo:
-                archivo.write(nombre)
+                json.dump({'nombre': nombre}, archivo)
             return nombre
     
     def mostrar_tareas(self):
@@ -171,15 +190,16 @@ class GestorTareas:
         self.mensaje_accion = "  ¡No existe ninguna acción para el carácter introducido!\n \n  > * Elige un número de acción del 1 al 5. * <"
     
     def guardar_tareas(self):
-        with open(self.archivo_datos, "wb") as archivo:
-            pickle.dump(self.tareas, archivo)
+        with open(self.archivo_datos, "w") as archivo:
+            json.dump([tarea.to_dict() for tarea in self.tareas], archivo)
         """Abre el archivo especificado en modo escritura binaria ("wb").
         Escribe en el archivo abierto utilizando el método 'dump()'."""
     
     def cargar_tareas(self):
         try:
-            with open(self.archivo_datos, "rb") as archivo:
-                self.tareas = pickle.load(archivo)
+            with open(self.archivo_datos, "r") as archivo:
+                datos = json.load(archivo)
+                self.tareas = [Tarea.from_dict(data) for data in datos]
             """Intenta abrir el archivo especificado en modo lectura binaria ("rb")."""
         except FileNotFoundError:   # Maneja la excepción que se produce si el archivo no existe.
             pass                    # En este caso, no se realiza ninguna acción y se ignora la excepción.

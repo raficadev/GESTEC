@@ -1,0 +1,59 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# CPython
+*.pyc
+
+# Cython
+*.pyx
+*.pyd
+
+# PyInstaller
+dist/
+build/
+*.exe
+*.spec
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# SQL Alchemy
+*.sqlite3
+
+# Pytest
+coverage/
+__pycache__/
+.tox/
+*.pyc
+*.pyo
+
+# Unit test / coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-workspace
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Output files
+*.out
+
+# Project specific
+/Gestec\ Archivos/tareas.json
+/Gestec\ Archivos/usuario.json
