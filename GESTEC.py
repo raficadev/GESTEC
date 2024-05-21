@@ -96,7 +96,7 @@ class GestorTareas:
             for i, tarea in enumerate(normal_prioridad, start=len(alta_prioridad) + 1):
                 print(f"{i}. {tarea}")
     
-    def agregar_tarea(self):
+    def agregar_tarea(self, descripcion="", es_prioritaria=False):
         descripcion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo quieres que se llame la nueva tarea?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
         if not descripcion.strip(): # Validación de descripción vacía o solo espacios en blanco.
             self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea!"
