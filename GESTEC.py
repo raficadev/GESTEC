@@ -82,7 +82,8 @@ class GestorTareas:
             print(f"\n          ¡¡¡Hurraaa {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}!!!\n \n        No tienes tareas pendientes.")
             return [], []
         
-        # Separa las tareas en dos listas: alta_prioridad y normal_prioridad
+        self.tareas.sort(key=lambda x: (not x.prioridad, x.fecha_creacion))
+        # Separa las tareas en dos listas:
         alta_prioridad = [tarea for tarea in self.tareas if tarea.prioridad]
         normal_prioridad = [tarea for tarea in self.tareas if not tarea.prioridad]
         
@@ -98,13 +99,19 @@ class GestorTareas:
                 
         return alta_prioridad, normal_prioridad
     
+    def listar_tareas(self):
+        self.tareas.sort(key=lambda x: (not x.prioridad, x.fecha_creacion))
+        alta_prioridad = [tarea for tarea in self.tareas if tarea.prioridad]
+        normal_prioridad = [tarea for tarea in self.tareas if not tarea.prioridad]
+        return alta_prioridad, normal_prioridad
+    
     def agregar_tarea(self, descripcion=None, prioridad=None):
         if descripcion is None:
             descripcion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo quieres que se llame la nueva tarea?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
         if not descripcion.strip():  # Validación de descripción vacía o solo espacios en blanco.
             self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea!"
             return
-
+        
         if prioridad is None:
             respuesta_prioritaria = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Es una tarea prioritaria? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
             if respuesta_prioritaria == 's':
@@ -114,98 +121,59 @@ class GestorTareas:
             else:
                 self.mensaje_accion = "  ¡Respuesta inválida! Por favor, responde 's' para sí o 'n' para no."
                 return
-
+        
         nueva_tarea = Tarea(descripcion, prioridad)  # Crea un nuevo objeto 'Tarea',
         self.tareas.append(nueva_tarea)  # y agrega el nuevo objeto a la lista de tareas.
         self.guardar_tareas()  # Guarda las tareas en un archivo.
         self.mensaje_accion = "  ¡Ahora tienes una nueva tarea pendiente!"
     
-    def marcar_completada(self):
-        if not self.tareas:                      
-            self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
-            return
-        
-        try:
-            posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que has completado?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
-            if 1 <= posicion <= len(self.tareas):   # Valida la posición introducida.
-                self.tareas[posicion - 1].marcar_completada()   # Marca la tarea en la posición indicada como completada utilizando el método 'marcar_completada()' del objeto 'Tarea'.
-                self.guardar_tareas()
-                self.mensaje_accion = "  ¡Genial, la tarea se ha completado!"
-            else:
-                self.mensaje_accion = "  ¡La posición que has indicado es inválida!"
-        except ValueError: # Maneja la excepción 'ValueError' si la entrada no es un número entero.
-                self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
-    
-    def eliminar_tarea(self, tarea=None):
+    def operar_tarea(self, operacion):
         if not self.tareas:
             self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
             return
-
-        alta_prioridad, normal_prioridad = self.mostrar_tareas()
-
-        if tarea is None:
-            try:
-                posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
+        
+        alta_prioridad, normal_prioridad = self.listar_tareas()
+        total_tareas = alta_prioridad + normal_prioridad
+        
+        try:
+            posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que quieres {operacion}?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
             
-                # Determinar si la posición corresponde a una tarea de alta prioridad o normal
-                if 1 <= posicion <= len(alta_prioridad):
-                    tarea_a_eliminar = alta_prioridad[posicion - 1]
-                elif len(alta_prioridad) < posicion <= len(alta_prioridad) + len(normal_prioridad):
-                    tarea_a_eliminar = normal_prioridad[posicion - len(alta_prioridad) - 1]
-                else:
-                    self.mensaje_accion = "  ¡La posición que has indicado es inválida!"
-                    return
-
-                confirmacion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Estás seguro que quieres eliminar la tarea '{tarea_a_eliminar.descripcion}'? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
-                if confirmacion == 's':
-                    self.tareas.remove(tarea_a_eliminar)
-                    self.guardar_tareas()
-                    self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
-                elif confirmacion == 'n':
-                    self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
-                else:
-                    self.mensaje_accion = "  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
-            except ValueError:
-                self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
-        else:
-            if tarea in self.tareas:
-                self.tareas.remove(tarea)
-                self.guardar_tareas()
-                self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
-            else:
-                self.mensaje_accion = "  ¡La tarea indicada no se encuentra en la lista!"
-    
-    def modificar_tarea(self):
-        if not self.tareas:
-            self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
-            return
-        
-        try:
-            posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que quieres modificar?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
-            if 1 <= posicion <= len(self.tareas):
-                print(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Qué modificación quieres hacer de la tarea '{self.tareas[posicion - 1].descripcion}'?")
-                print("\n > 1 - Modificar el nombre.")
-                print(" > 2 - Modificar la prioridad.")
-                opcion = input(f"\n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
-                if opcion == "1":
-                    nueva_descripcion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo quieres renombrar a la tarea '{self.tareas[posicion - 1].descripcion}'?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
-                    if nueva_descripcion.strip():
-                        self.tareas[posicion - 1].descripcion = nueva_descripcion
-                        self.guardar_tareas()
-                        self.mensaje_accion = "  ¡Se ha modificado el nombre de la tarea!"
+            if 1 <= posicion <= len(total_tareas):
+                tarea = total_tareas[posicion - 1]
+                if operacion == "completar":
+                    tarea.marcar_completada()
+                    self.mensaje_accion = "  ¡Genial, la tarea se ha completado!"
+                elif operacion == "eliminar":
+                    confirmacion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Estás seguro que quieres eliminar la tarea '{tarea.descripcion}'? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
+                    if confirmacion == 's':
+                        self.tareas.remove(tarea)
+                        self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
                     else:
-                        self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea! La tarea se mantendrá sin cambios."
-                elif opcion == "2":
-                    nueva_prioridad = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿La tarea '{self.tareas[posicion - 1].descripcion}' es de prioridad alta? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower() == 's'
-                    self.tareas[posicion - 1].prioridad = nueva_prioridad
-                    self.guardar_tareas()
-                    self.mensaje_accion = "  ¡Se ha modificado la prioridad de la tarea!"
-                else:
-                    self.mensaje_accion = "  ¡Opción inválida! Por favor, elige '1' para modificar el nombre o '2' para modificar la prioridad."
+                        self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
+                elif operacion == "modificar":
+                    print(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Qué modificación quieres hacer de la tarea '{tarea.descripcion}'?")
+                    print("\n > 1 - Modificar el nombre.")
+                    print(" > 2 - Modificar la prioridad.")
+                    opcion = input(f"\n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
+                    if opcion == "1":
+                        nueva_descripcion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo quieres renombrar a la tarea '{tarea.descripcion}'?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
+                        if nueva_descripcion.strip():
+                            tarea.descripcion = nueva_descripcion
+                            self.mensaje_accion = "  ¡Se ha modificado el nombre de la tarea!"
+                        else:
+                            self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea! La tarea se mantendrá sin cambios."
+                    elif opcion == "2":
+                        nueva_prioridad = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿La tarea '{tarea.descripcion}' es de prioridad alta? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower() == 's'
+                        tarea.prioridad = nueva_prioridad
+                        self.mensaje_accion = "  ¡Se ha modificado la prioridad de la tarea!"
+                    else:
+                        self.mensaje_accion = "  ¡Opción inválida! Por favor, elige '1' para modificar el nombre o '2' para modificar la prioridad."
             else:
-                self.mensaje_accion = "  ¡La posición que has indicado es inválida!"
+                self.mensaje_accion = "  ¡El número indicado no corresponde a ninguna tarea existente!"
         except ValueError:
-            self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
+            self.mensaje_accion = "  ¡Debes introducir un número para seleccionar una tarea!"
+        finally:
+            self.guardar_tareas()
     
     def opcion_invalida(self):
         self.mensaje_accion = "  ¡No existe ninguna acción para el carácter introducido!\n \n  > * Elige un número de acción del 1 al 5. * <"
@@ -213,37 +181,32 @@ class GestorTareas:
     def guardar_tareas(self):
         with open(self.archivo_datos, "w") as archivo:
             json.dump([tarea.to_dict() for tarea in self.tareas], archivo)
-        """Abre el archivo especificado en modo escritura binaria ("wb").
+        """Abre el archivo especificado en modo escritura.
         Escribe en el archivo abierto utilizando el método 'dump()'."""
     
     def cargar_tareas(self):
-        try:
+        if os.path.exists(self.archivo_datos):
             with open(self.archivo_datos, "r") as archivo:
-                datos = json.load(archivo)
-                self.tareas = [Tarea.from_dict(data) for data in datos]
-            """Intenta abrir el archivo especificado en modo lectura binaria ("rb")."""
-        except FileNotFoundError:   # Maneja la excepción que se produce si el archivo no existe.
-            pass                    # En este caso, no se realiza ninguna acción y se ignora la excepción.
-        except Exception as e:
-            print(f"  ¡Ha ocurrido un error al cargar las tareas: {e}")
+                self.tareas = [Tarea.from_dict(data) for data in json.load(archivo)]
+            """Intenta abrir el archivo especificado en modo lectura."""
 
-def limpiar_consola():
-    os.system('cls' if platform.system() == "Windows" else 'clear')
+    def limpiar_consola(self):
+        os.system('cls' if platform.system() == "Windows" else 'clear')
 
-def mostrar_menu():
-    print(f"{Style.BRIGHT}---------------- ACCIONES: ------------------\n{Style.RESET_ALL}")
-    print(" > 1 - Añadir una tarea nueva.")
-    print(" > 2 - Marcar una tarea como completada.")
-    print(" > 3 - Modificar una tarea existente.")
-    print(" > 4 - Eliminar una tarea existente.")
-    print(" > 5 - Salir del programa.")
+    def mostrar_menu(self):
+        print(f"{Style.BRIGHT}---------------- ACCIONES: ------------------\n{Style.RESET_ALL}")
+        print(" > 1 - Añadir una tarea nueva.")
+        print(" > 2 - Marcar una tarea como completada.")
+        print(" > 3 - Modificar una tarea existente.")
+        print(" > 4 - Eliminar una tarea existente.")
+        print(" > 5 - Salir del programa.")
 
 def main():
     gestor_tareas = GestorTareas()  # Crea una instancia del gestor de tareas
     gestor_tareas.cargar_tareas()  # Carga las tareas guardadas al iniciar el programa.
     
     while True: # Bucle principal que se ejecuta hasta que el usuario selecciona la opción "Salir".      
-        limpiar_consola()
+        gestor_tareas.limpiar_consola()
         print(f"\n{Back.WHITE}{Fore.BLACK}=============================================")
         print(f"{Back.WHITE}{Fore.BLACK}==                 GESTEC                  ==")
         print(f"{Back.WHITE}{Fore.BLACK}==            Gestor de tareas             ==")
@@ -252,17 +215,17 @@ def main():
         print("\n---------------------------------------------\n")
         print(gestor_tareas.mensaje_accion)
         print("\n")
-        mostrar_menu()
+        gestor_tareas.mostrar_menu()
         opcion = input(f"\n -> {Fore.CYAN}{Style.BRIGHT}{gestor_tareas.nombre_usuario}{Style.RESET_ALL}: Quiero que realices la acción número: ")
         
         if opcion == "1":
             gestor_tareas.agregar_tarea()
         elif opcion == "2":
-            gestor_tareas.marcar_completada()
+            gestor_tareas.operar_tarea("completar")
         elif opcion == "3":
-            gestor_tareas.modificar_tarea()
+            gestor_tareas.operar_tarea("modificar")
         elif opcion == "4":
-            gestor_tareas.eliminar_tarea()
+            gestor_tareas.operar_tarea("eliminar")
         elif opcion == "5":
             gestor_tareas.guardar_tareas()
             print(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¡Ha sido un placer ayudarte {Fore.CYAN}{Style.BRIGHT}{gestor_tareas.nombre_usuario}{Style.RESET_ALL}, nos vemos pronto!\n \n > Desconectando...\n")
