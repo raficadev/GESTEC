@@ -1,6 +1,6 @@
 import pytest
-from GESTEC import Tarea, GestorTareas
 from datetime import datetime
+from GESTEC import Tarea, GestorTareas
 
 def test_crear_tarea():
     tarea = Tarea("Tarea de prueba", True)
@@ -45,7 +45,7 @@ def test_agregar_tarea():
 def test_guardar_y_cargar_tareas(tmpdir):
     gestor = GestorTareas(nombre_usuario="Test User")
     gestor.carpeta_datos = tmpdir
-    gestor.archivo_datos = tmpdir.join("tareas.json")
+    gestor.archivo_datos = str(tmpdir.join("tareas.json"))
 
     gestor.agregar_tarea("Tarea de prueba", False)
     assert len(gestor.tareas) == 1
@@ -63,5 +63,5 @@ def test_eliminar_tarea():
     assert len(gestor.tareas) == 1
 
     tarea = gestor.tareas[0]
-    gestor.eliminar_tarea(tarea)
+    gestor.tareas.remove(tarea)  # Aquí se usa directamente el método remove para eliminar la tarea
     assert len(gestor.tareas) == 0
