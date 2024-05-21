@@ -80,7 +80,7 @@ class GestorTareas:
     def mostrar_tareas(self):
         if not self.tareas: # Comprueba si la lista de tareas está vacía.
             print(f"\n          ¡¡¡Hurraaa {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}!!!\n \n        No tienes tareas pendientes.")
-            return
+            return [], []
         
         # Separa las tareas en dos listas: alta_prioridad y normal_prioridad
         alta_prioridad = [tarea for tarea in self.tareas if tarea.prioridad]
@@ -95,6 +95,8 @@ class GestorTareas:
             print(f"\n \n{Style.BRIGHT} >> PRIORIDAD NORMAL:\n{Style.RESET_ALL}")
             for i, tarea in enumerate(normal_prioridad, start=len(alta_prioridad) + 1):
                 print(f"{i}. {tarea}")
+                
+        return alta_prioridad, normal_prioridad
     
     def agregar_tarea(self, descripcion=None, prioridad=None):
         if descripcion is None:
@@ -138,24 +140,33 @@ class GestorTareas:
         if not self.tareas:
             self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
             return
-        
+
+        alta_prioridad, normal_prioridad = self.mostrar_tareas()
+
         if tarea is None:
             try:
                 posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
-                if 1 <= posicion <= len(self.tareas):
-                    confirmacion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Estás seguro que quieres eliminar la tarea '{self.tareas[posicion - 1].descripcion}'? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
-                    if confirmacion == 's':
-                        del self.tareas[posicion - 1]   # Elimina la tarea en la posición indicada de la lista utilizando la instrucción 'del'.
-                        self.guardar_tareas()
-                        self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
-                    elif confirmacion == 'n':
-                        self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
-                    else:
-                        self.mensaje_accion = "  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
+            
+                # Determinar si la posición corresponde a una tarea de alta prioridad o normal
+                if 1 <= posicion <= len(alta_prioridad):
+                    tarea_a_eliminar = alta_prioridad[posicion - 1]
+                elif len(alta_prioridad) < posicion <= len(alta_prioridad) + len(normal_prioridad):
+                    tarea_a_eliminar = normal_prioridad[posicion - len(alta_prioridad) - 1]
                 else:
-                    self.mensaje_accion = "  ¡La posición que has indicado es inválida!"        
+                    self.mensaje_accion = "  ¡La posición que has indicado es inválida!"
+                    return
+
+                confirmacion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Estás seguro que quieres eliminar la tarea '{tarea_a_eliminar.descripcion}'? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
+                if confirmacion == 's':
+                    self.tareas.remove(tarea_a_eliminar)
+                    self.guardar_tareas()
+                    self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
+                elif confirmacion == 'n':
+                    self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
+                else:
+                    self.mensaje_accion = "  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
             except ValueError:
-                    self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
+                self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
         else:
             if tarea in self.tareas:
                 self.tareas.remove(tarea)
