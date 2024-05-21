@@ -36,20 +36,20 @@ def test_tarea_from_dict():
     assert isinstance(tarea.fecha_creacion, datetime)
 
 def test_agregar_tarea():
-    gestor = GestorTareas()
+    gestor = GestorTareas(nombre_usuario="Test User")
     gestor.agregar_tarea("Tarea de prueba", False)
     assert len(gestor.tareas) == 1
     assert gestor.tareas[0].descripcion == "Tarea de prueba"
 
 def test_guardar_y_cargar_tareas(tmpdir):
-    gestor = GestorTareas()
+    gestor = GestorTareas(nombre_usuario="Test User")
     gestor.carpeta_datos = tmpdir
     gestor.archivo_datos = tmpdir.join("tareas.json")
     
     gestor.agregar_tarea("Tarea de prueba", False)
     gestor.guardar_tareas()
     
-    nuevo_gestor = GestorTareas()
+    nuevo_gestor = GestorTareas(nombre_usuario="Test User")
     nuevo_gestor.carpeta_datos = tmpdir
     nuevo_gestor.archivo_datos = tmpdir.join("tareas.json")
     nuevo_gestor.cargar_tareas()
@@ -58,7 +58,7 @@ def test_guardar_y_cargar_tareas(tmpdir):
     assert nuevo_gestor.tareas[0].descripcion == "Tarea de prueba"
 
 def test_eliminar_tarea():
-    gestor = GestorTareas()
+    gestor = GestorTareas(nombre_usuario="Test User")
     gestor.agregar_tarea("Tarea de prueba", False)
     gestor.eliminar_tarea(1)
     assert len(gestor.tareas) == 0
