@@ -40,25 +40,28 @@ def test_agregar_tarea():
     gestor.agregar_tarea("Tarea de prueba", False)
     assert len(gestor.tareas) == 1
     assert gestor.tareas[0].descripcion == "Tarea de prueba"
+    assert not gestor.tareas[0].es_prioritaria
 
 def test_guardar_y_cargar_tareas(tmpdir):
     gestor = GestorTareas(nombre_usuario="Test User")
     gestor.carpeta_datos = tmpdir
     gestor.archivo_datos = tmpdir.join("tareas.json")
-    
+
     gestor.agregar_tarea("Tarea de prueba", False)
+    assert len(gestor.tareas) == 1
+
     gestor.guardar_tareas()
-    
-    nuevo_gestor = GestorTareas(nombre_usuario="Test User")
-    nuevo_gestor.carpeta_datos = tmpdir
-    nuevo_gestor.archivo_datos = tmpdir.join("tareas.json")
-    nuevo_gestor.cargar_tareas()
-    
-    assert len(nuevo_gestor.tareas) == 1
-    assert nuevo_gestor.tareas[0].descripcion == "Tarea de prueba"
+    gestor.tareas = []  # Limpiar la lista de tareas
+    gestor.cargar_tareas()
+    assert len(gestor.tareas) == 1
+    assert gestor.tareas[0].descripcion == "Tarea de prueba"
+    assert not gestor.tareas[0].es_prioritaria
 
 def test_eliminar_tarea():
     gestor = GestorTareas(nombre_usuario="Test User")
     gestor.agregar_tarea("Tarea de prueba", False)
-    gestor.eliminar_tarea(1)
+    assert len(gestor.tareas) == 1
+
+    tarea = gestor.tareas[0]
+    gestor.eliminar_tarea(tarea)
     assert len(gestor.tareas) == 0

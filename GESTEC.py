@@ -96,23 +96,25 @@ class GestorTareas:
             for i, tarea in enumerate(normal_prioridad, start=len(alta_prioridad) + 1):
                 print(f"{i}. {tarea}")
     
-    def agregar_tarea(self, descripcion="", es_prioritaria=False):
-        descripcion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo quieres que se llame la nueva tarea?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
-        if not descripcion.strip(): # Validación de descripción vacía o solo espacios en blanco.
+    def agregar_tarea(self, descripcion=None, prioridad=None):
+        if descripcion is None:
+            descripcion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cómo quieres que se llame la nueva tarea?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ")
+        if not descripcion.strip():  # Validación de descripción vacía o solo espacios en blanco.
             self.mensaje_accion = "  ¡No has indicado ningún nombre para la tarea!"
             return
-        
-        respuesta_prioritaria = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Es una tarea prioritaria? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
-        if respuesta_prioritaria == 's':
-            es_prioritaria = True
-        elif respuesta_prioritaria == 'n':
-            es_prioritaria = False
-        else:
-            self.mensaje_accion = "  ¡Respuesta inválida! Por favor, responde 's' para sí o 'n' para no."
-            return
-        
-        nueva_tarea = Tarea(descripcion, es_prioritaria)    # Crea un nuevo objeto 'Tarea',
-        self.tareas.append(nueva_tarea)     # y agrega el nuevo objeto a la lista de tareas.
+
+        if prioridad is None:
+            respuesta_prioritaria = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Es una tarea prioritaria? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
+            if respuesta_prioritaria == 's':
+                prioridad = True
+            elif respuesta_prioritaria == 'n':
+                prioridad = False
+            else:
+                self.mensaje_accion = "  ¡Respuesta inválida! Por favor, responde 's' para sí o 'n' para no."
+                return
+
+        nueva_tarea = Tarea(descripcion, prioridad)  # Crea un nuevo objeto 'Tarea',
+        self.tareas.append(nueva_tarea)  # y agrega el nuevo objeto a la lista de tareas.
         self.guardar_tareas()  # Guarda las tareas en un archivo.
         self.mensaje_accion = "  ¡Ahora tienes una nueva tarea pendiente!"
     
