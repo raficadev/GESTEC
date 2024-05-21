@@ -55,10 +55,10 @@ class GestorTareas:
     archivo_usuario = os.path.join(carpeta_datos, "usuario.json")
     mensaje_accion = ""
     
-    def __init__(self):
+    def __init__(self, nombre_usuario=""):
         self.tareas = []    # (list): Lista que almacena objetos de tipo 'Tarea'.
         self.crear_carpeta_datos()
-        self.nombre_usuario = self.cargar_usuario()
+        self.nombre_usuario = nombre_usuario if nombre_usuario else self.cargar_usuario()
         self.mensaje_accion = f"      ¡Me encanta que estés aquí {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}!\n \n   Selecciona la acción que voy a realizar:"
     
     def crear_carpeta_datos(self):
