@@ -40,7 +40,7 @@ def test_agregar_tarea():
     gestor.agregar_tarea("Tarea de prueba", False)
     assert len(gestor.tareas) == 1
     assert gestor.tareas[0].descripcion == "Tarea de prueba"
-    assert not gestor.tareas[0].es_prioritaria
+    assert not gestor.tareas[0].prioridad
 
 def test_guardar_y_cargar_tareas(tmpdir):
     gestor = GestorTareas(nombre_usuario="Test User")
@@ -55,7 +55,7 @@ def test_guardar_y_cargar_tareas(tmpdir):
     gestor.cargar_tareas()
     assert len(gestor.tareas) == 1
     assert gestor.tareas[0].descripcion == "Tarea de prueba"
-    assert not gestor.tareas[0].es_prioritaria
+    assert not gestor.tareas[0].prioridad
 
 def test_eliminar_tarea():
     gestor = GestorTareas(nombre_usuario="Test User")

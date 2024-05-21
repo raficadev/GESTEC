@@ -134,27 +134,35 @@ class GestorTareas:
         except ValueError: # Maneja la excepción 'ValueError' si la entrada no es un número entero.
                 self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
     
-    def eliminar_tarea(self):
+    def eliminar_tarea(self, tarea=None):
         if not self.tareas:
             self.mensaje_accion = "  ¡No tienes ninguna tarea pendiente!"
             return
         
-        try:
-            posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
-            if 1 <= posicion <= len(self.tareas):
-                confirmacion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Estás seguro que quieres eliminar la tarea '{self.tareas[posicion - 1].descripcion}'? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
-                if confirmacion == 's':
-                    del self.tareas[posicion - 1]   # Elimina la tarea en la posición indicada de la lista utilizando la instrucción 'del'.
-                    self.guardar_tareas()
-                    self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
-                elif confirmacion == 'n':
-                    self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
+        if tarea is None:
+            try:
+                posicion = int(input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Cuál es la posición de la tarea que quieres eliminar?\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: "))
+                if 1 <= posicion <= len(self.tareas):
+                    confirmacion = input(f"\n -> {Fore.MAGENTA}{Style.BRIGHT}GESTEC{Style.RESET_ALL}: ¿Estás seguro que quieres eliminar la tarea '{self.tareas[posicion - 1].descripcion}'? (s/n)\n \n -> {Fore.CYAN}{Style.BRIGHT}{self.nombre_usuario}{Style.RESET_ALL}: ").lower()
+                    if confirmacion == 's':
+                        del self.tareas[posicion - 1]   # Elimina la tarea en la posición indicada de la lista utilizando la instrucción 'del'.
+                        self.guardar_tareas()
+                        self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
+                    elif confirmacion == 'n':
+                        self.mensaje_accion = "  Se ha cancelado la eliminación de la tarea."
+                    else:
+                        self.mensaje_accion = "  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
                 else:
-                    self.mensaje_accion = "  El carácter introducido es inválido. Por favor, introduce 's' para eliminar o 'n' para cancelar."
+                    self.mensaje_accion = "  ¡La posición que has indicado es inválida!"        
+            except ValueError:
+                    self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
+        else:
+            if tarea in self.tareas:
+                self.tareas.remove(tarea)
+                self.guardar_tareas()
+                self.mensaje_accion = "  ¡Listo, la tarea ha sido eliminada!"
             else:
-                self.mensaje_accion = "  ¡La posición que has indicado es inválida!"        
-        except ValueError:
-                self.mensaje_accion = "  ¡Tienes que introducir un número entero!"
+                self.mensaje_accion = "  ¡La tarea indicada no se encuentra en la lista!"
     
     def modificar_tarea(self):
         if not self.tareas:
