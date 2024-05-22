@@ -1,6 +1,10 @@
 # GESTEC - Gestor de Tareas
 
 [![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/)
+[![Colorama](https://img.shields.io/badge/Colorama-0.4.4-green.svg)](https://pypi.org/project/colorama/)
+[![JSON](https://img.shields.io/badge/JSON-Data%20Format-0c8ec5.svg)](https://www.json.org/json-en.html)
+[![pytest](https://img.shields.io/badge/pytest-framework-yellow.svg)](https://docs.pytest.org/en/stable/)
+[![Safe Creative](https://img.shields.io/badge/Safe%20Creative-Registro%20de%20Derechos-orange.svg)](https://www.safecreative.org/)
 
 **GESTEC** es una aplicación desarrollada en lenguaje Python que, haciendo uso de la interfaz de línea de comandos (CLI), permite al usuario a través de la Terminal/Consola del Sistema Operativo (SO) gestionar una lista de tareas pendientes. 
 
