@@ -1,4 +1,7 @@
 # GESTEC - Gestor de Tareas
+
+[![Python](https://img.shields.io/badge/Python-3.7%2B-blue.svg)](https://www.python.org/)
+
 **GESTEC** es una aplicación desarrollada en lenguaje Python que, haciendo uso de la interfaz de línea de comandos (CLI), permite al usuario a través de la Terminal/Consola del Sistema Operativo (SO) gestionar una lista de tareas pendientes. 
 
 De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las tareas son almacenadas en un archivo `tareas.json` al igual que el nombre de usuario `usuario.json` en la carpeta `Gestec Archivos` para su conservación y posterior cargado al volver a acceder a la aplicación.
@@ -21,7 +24,7 @@ De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las 
 - Marcar las tareas existentes como completadas.
 - Modificar el nombre y/o la prioridad de las tareas existentes.
 - Eliminar las tareas existentes.
-- Almacenamiento en archivo `JSON`.
+- Persistencia de datos en archivo `JSON`.
 
 ---
 ## Hoja de Ruta
@@ -53,23 +56,15 @@ Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proye
 **Prerrequisitos:**
 - Python 3.7 o superior. Puedes descargarlo desde [python.org](https://python.org).
 
-- `colorama` para los colores en la terminal. Instálalo con:
-```bash
-pip install colorama
-```
+- `colorama` para los colores en la terminal.
+  
 **Pasos para instalar el proyecto localmente:**
-1. Clonar el repositorio:
-    ```bash
-    git clone https://github.com/raficadev/GESTEC.git
-    ```
-2. Navegar al directorio del proyecto:
-    ```bash
-    cd gestec
-    ```
-3. Instalar las dependencias:
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+git clone https://github.com/raficadev/GESTEC.git
+cd GESTEC
+pip install -r requirements.txt
+```
+
 **Descargar el ejecutable:**
 
 Si prefieres no clonar el repositorio y deseas usar una versión precompilada del programa, puedes descargar el ejecutable desde la sección de [Releases](https://github.com/raficadev/GESTEC/releases).
@@ -78,11 +73,7 @@ Si prefieres no clonar el repositorio y deseas usar una versión precompilada de
 ## Uso
 Para iniciar el programa, ejecuta:
 ```bash
-cd gestec
-```
-Seguido de:
-```bash
-python3 gestec.py
+python3 GESTEC.py
 ```
 Sigue las instrucciones en pantalla para añadir, completar, modificar o eliminar tareas.
 > [!NOTE]
