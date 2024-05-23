@@ -5,6 +5,8 @@
 [![JSON](https://img.shields.io/badge/JSON-Data%20Format-0c8ec5.svg)](https://www.json.org/json-en.html)
 [![pytest](https://img.shields.io/badge/pytest-framework-yellow.svg)](https://docs.pytest.org/en/stable/)
 [![Safe Creative](https://img.shields.io/badge/Safe%20Creative-Registro%20de%20Derechos-orange.svg)](https://www.safecreative.org/)
+[![CC BY-SA 4.0](https://img.shields.io/badge/CC%20BY--SA%204.0-Licencia-blue.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
+
 
 **GESTEC** es una aplicación desarrollada en lenguaje Python que, haciendo uso de la interfaz de línea de comandos (CLI), permite al usuario a través de la Terminal/Consola del Sistema Operativo (SO) gestionar una lista de tareas pendientes. 
 
@@ -58,7 +60,7 @@ Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proye
 ---
 ## Instalación
 **Prerrequisitos:**
-- Python 3.7 o superior. Puedes descargarlo desde [python.org](https://python.org).
+- Python 3.7 o superior. Puedes descargarlo desde [Python](https://python.org).
 
 - `colorama` para los colores en la terminal.
   
@@ -108,11 +110,11 @@ Si encuentras un error, por favor abre un [issue](https://github.com/raficadev/G
 
 ---
 ## Licencia
-Este proyecto está licenciado bajo la licencia [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) creada por Rafel Castelló Fiol (raficadev) en 2024. 
+Este proyecto está licenciado bajo la licencia [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/) creada por Rafel Castelló Fiol (raficadev) en 2024. 
 
 Puedes encontrar más información sobre la licencia en [safecreative](https://www.safecreative.org/work/2405097929940-gestec).
 
-El texto completo de la licencia se encuentra en el archivo [LICENSE.txt](LICENSE.txt).
+El texto completo de la licencia se encuentra en el archivo [LICENSE](LICENSE).
     
 ---
 ## Autor
