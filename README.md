@@ -91,10 +91,10 @@ Sigue las instrucciones en pantalla para añadir, completar, modificar o elimina
 ---
 ## Contribuir
 Las contribuciones son bienvenidas. Sigue estos pasos para contribuir:
-1. Haz un fork del proyecto.
-2. Crea una nueva rama `git checkout -b feature/nueva-funcionalidad`.
-3. Realiza los cambios necesarios y haz commits `git commit -m 'Añadir nueva funcionalidad'`.
-4. Sube los cambios a tu repositorio `git push origin feature/nueva-funcionalidad`.
+1. Realiza un fork del proyecto.
+2. Crea una nueva rama `git checkout -b nueva-funcionalidad`.
+3. Realiza los cambios necesarios y haz commit `git commit -m 'Añadir nueva funcionalidad'`.
+4. Sube los cambios a tu repositorio `git push origin nueva-funcionalidad`.
 5. Abre un Pull Request.
 
 También puedes contribuir de las siguientes formas:
