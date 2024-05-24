@@ -12,7 +12,7 @@ setup(
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+        "License :: Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
         "Operating System :: OS Independent",
     ],
     install_requires=[
