@@ -110,7 +110,7 @@ Si encuentras un error, por favor abre un [issue](https://github.com/raficadev/G
 
 ---
 ## Licencia
-Este proyecto está licenciado bajo la licencia [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/) creada por Rafel Castelló Fiol (raficadev) en 2024. 
+Este proyecto está licenciado bajo la licencia [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/) creada por [Rafel Castelló Fiol (raficadev)](https://github.com/raficadev) en 2024. 
 
 Puedes encontrar más información sobre la licencia en [safecreative](https://www.safecreative.org/work/2405097929940-gestec).
 
