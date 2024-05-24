@@ -1,5 +1,14 @@
 # Aplicación de Terminal/Consola para gestionar tareas pendientes.
 
+"""
+Este código está bajo la licencia:
+Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 
+creada por Rafel Castelló Fiol (raficadev) en 2024.
+
+Puedes encontrar más información sobre la licencia en:
+https://www.safecreative.org/work/2405097929940-gestec
+"""
+
 from datetime import datetime   # Importa el módulo para trabajar con fechas y horas.
 import json                     # Importa el módulo para almacenar los objetos en un archivo.
 import os                       # Importa el módulo para interactuar con el sistema operativo.
@@ -235,11 +244,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    """Este código está bajo la licencia 
-    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
-    creada por Rafel Castelló Fiol (raficadev) en 2024.
-    
-    Puedes encontrar más información sobre la licencia en:
-    https://www.safecreative.org/work/2405097929940-gestec"""
-    
