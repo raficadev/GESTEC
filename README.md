@@ -8,7 +8,7 @@
 [![CC BY-SA 4.0](https://img.shields.io/badge/CC%20BY--SA%204.0-Licencia-blue.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
 
 
-**GESTEC** es una aplicación desarrollada en lenguaje Python que, haciendo uso de la interfaz de línea de comandos (CLI), permite al usuario a través de la Terminal/Consola del Sistema Operativo (SO) gestionar una lista de tareas pendientes. 
+**GESTEC** es una aplicación desarrollada en lenguaje `Python` que, haciendo uso de la interfaz de línea de comandos (CLI), permite al usuario a través de la Terminal/Consola del Sistema Operativo (SO) gestionar una lista de tareas pendientes. 
 
 De manera sencilla permite añadir, completar, modificar y eliminar tareas. Las tareas son almacenadas en un archivo `tareas.json` al igual que el nombre de usuario `usuario.json` en la carpeta `Gestec Archivos` para su conservación y posterior cargado al volver a acceder a la aplicación.
 
@@ -60,9 +60,9 @@ Esta hoja de ruta es un plan vivo y está sujeto a cambios a medida que el proye
 ---
 ## Instalación
 **Prerrequisitos:**
-- Python 3.7 o superior. Puedes descargarlo desde [Python](https://python.org).
+- Python 3.7 o superior.
 
-- `colorama` para los colores en la terminal.
+- `colorama`.
   
 **Pasos para instalar el proyecto localmente:**
 ```bash
@@ -97,7 +97,7 @@ Las contribuciones son bienvenidas. Sigue estos pasos para contribuir:
 2. Crea una nueva rama `git checkout -b nueva-funcionalidad`.
 3. Realiza los cambios necesarios y haz commit `git commit -m 'Añadir nueva funcionalidad'`.
 4. Sube los cambios a tu repositorio `git push origin nueva-funcionalidad`.
-5. Abre un Pull Request.
+5. Abre un [Pull Request](https://github.com/raficadev/GESTEC/pulls).
 
 También puedes contribuir de las siguientes formas:
 1. Crea un [issue](https://github.com/raficadev/GESTEC/issues) con tus sugerencias o mejoras.
