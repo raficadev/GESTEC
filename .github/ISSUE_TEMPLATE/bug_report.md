@@ -1,38 +1,40 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+name: Informe de error
+about: Informar un error para ayudarnos a mejorar
+title: '[ERROR] - '
+labels: 'error'
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe el error**
+Una descripción clara y concisa de cuál es el error.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Pasos para Reproducir**
+Pasos para reproducir el comportamiento:
+1. Vaya a '...'
+2. Haga clic en '....'
+3. Desplácese hasta '....'
+4. Ver error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Comportamiento esperado**
+Una descripción clara y concisa de lo que esperaba que sucediera.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Comportamiento real**
+Una descripción clara y concisa de lo que realmente sucedió.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Capturas de pantalla**
+Si corresponde, agregue capturas de pantalla para ayudar a explicar su problema.
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Ambiente**
+Por favor complete la siguiente información:
+- SO: [ej. Windows, MacOS, Linux]
+- Navegador (si corresponde): [ej. Chrome, Firefox, Safari]
+- Versión del software: [ej. 1.0.0]
+- Cualquier otro detalle ambiental relevante: [ej. Versión de Python, etc.]
 
-**Additional context**
-Add any other context about the problem here.
+**Contexto adicional**
+Agregue aquí cualquier otro contexto sobre el problema.
+
+**Registros y mensajes de error**
+Si corresponde, proporcione registros o mensajes de error que puedan ayudar a diagnosticar el problema.
