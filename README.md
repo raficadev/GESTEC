@@ -121,6 +121,7 @@ El texto completo de la licencia se encuentra en el archivo [LICENSE](LICENSE).
 ---
 ## Autor
 [Rafel Castelló Fiol (raficadev)](https://github.com/raficadev) - Desarrollador principal
+![Banner](images/CDDDFB2D-7176-4772-A71D-4D6F3BADC7BB.jpeg)
 
 ---
 ## Agradecimientos
